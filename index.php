@@ -33,10 +33,14 @@ function io_code_add_enlighter_assets() {
         // 判断是否存在代码块
         // 如果未找到块，则跳过加载资源
         if ( !$force_load ) {
-            $found_block = array_reduce( $posts, function($found, $post) { 
-                return $found || has_block( 'code', $post ) || preg_match('/(crayon-|<\/pre>)/i', $post->post_content, $matches);
-            }, false );
-            if ( !$found_block ) {
+            if (isset($posts) && is_array($posts)) {
+                $found_block = array_reduce( $posts, function($found, $post) { 
+                    return $found || has_block( 'code', $post ) || preg_match('/(crayon-|<\/pre>)/i', $post->post_content, $matches);
+                }, false );
+                if ( !$found_block ) {
+                    return;
+                }
+            } else {
                 return;
             }
         }
